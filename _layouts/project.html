@@ -1,0 +1,86 @@
+---
+layout: default
+---
+
+<!--title & description-->
+<div class="section">
+  <div class="container">
+
+    <h1 class="title">{{ page.title }}</h1>
+    <p style="margin-bottom: 8px">
+      <span class="has-text-weight-semibold">Status :</span>
+      {% if page.status == 'completed' %}
+      <span class="icon has-text-success"><i class="fa fa-check-circle"></i></span>
+      {% else %}
+      <span class="icon has-text-link"><i class="fa fa-sync-alt"></i></span>
+      {% endif %}
+      {{ page.status | capitalize }}
+
+      {% if page.date %}
+      <span class="icon has-text-danger"><i class="fa fa-clock"></i></span>
+      {{ page.date | date: '%b %d, %Y' }}
+      {% endif %}
+    </p>
+    <h3 class="subtitle">{{ page.description }}</h3>
+
+    <hr>
+
+    {% if page.member-usernames == 'club' %}
+    <p>
+      <span class="has-text-weight-semibold">Project done by : </span>
+      <span class="icon has-text-link"><i class="fa fa-users"></i></span>
+      <span>Robotics Club Team</span>
+    </p>
+    {% else %}
+    <h3 class="has-text-weight-semibold" style="margin-bottom:16px">Project members</h3>
+    <div class="columns">
+      {% for member-username in page.member-usernames %}
+      {% assign member = site.members | where:'username',member-username | first %}
+      {% if member != null %}
+      <div class="column is-narrow">
+        <a href="{{ member.url }}" class="box">
+          <div class="columns is-mobile is-vcentered">
+            <div class="column is-narrow">
+              <figure class="image is-48x48">
+                <img alt="Image of {{ member.name }}" class="is-rounded"
+                  src="{{ site.baseurl }}/assets/img/avatars/members/{{ member.avatar }}" title="{{ member.name }}">
+              </figure>
+            </div>
+            <div class="column is-narrow">
+              <p class="has-text-weight-semibold has-text-black">{{ member.name }}</p>
+              <p class="is-size-7 has-text-black">{{ member.email }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- Image gallery -->
+    {% if page.images %}
+    <h3 class="has-text-weight-semibold is-size-5" style="margin-bottom:16px">Project images</h3>
+    {% include gallery.html %}
+    <hr>
+    {% endif %}
+
+    <!--Youtube Video-->
+    {% if page.youtube-video %}
+    <h3 class="has-text-weight-semibold is-size-5" style="margin-bottom:16px">Project video</h3>
+    <div class="columns is-centered">
+      <div class="column is-two-thirds">
+        <div class="r-video-container box">
+          {{ page.youtube-video }}
+        </div>
+      </div>
+    </div>
+    <hr>
+    {% endif %}
+
+    {{ content }}
+
+  </div>
+</div>
